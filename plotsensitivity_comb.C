@@ -19,6 +19,8 @@ void plotsensitivity_comb(int mctype = 1011, double mupmumscale = 1.0){
   TString filestringup = "";
 
   TString eventtype = "";
+
+  //Determine which simulation we are comparing to our data.
   
   if(mctype == 1){
     filestring = "atnu_mc_upmu_nuetonumu_reco.root";
@@ -162,6 +164,7 @@ void plotsensitivity_comb(int mctype = 1011, double mupmumscale = 1.0){
 
   double tempchi2 = 0.0;
   cout<<"Pincer 3.0"<<endl;
+  //Iterate through possible values of other parameters
   for(int ith = 0; ith<theta13bins; ith++){ 
     for(int jcp = 0; jcp<CPdeltabins; jcp++){
     //int jcp = 0;
@@ -177,18 +180,7 @@ void plotsensitivity_comb(int mctype = 1011, double mupmumscale = 1.0){
 
     ts = sprintf(CPdeltastr,"%.3f",CPdelta);
     TString CPdeltastring = CPdeltastr;
-  
-    //TH2D *hpnorm = (TH2D*)f.Get("costhenup_numu_norm_"+theta13tstring+"_"+CPdeltastring);
-    //TH2D *hpinvert = (TH2D*)f.Get("costhenup_numu_invert_"+theta13tstring+"_"+CPdeltastring);
-    
-    //TH2D *hmnorm = (TH2D*)f.Get("costhenum_numu_norm_"+theta13tstring+"_"+CPdeltastring);
-    //TH2D *hminvert = (TH2D*)f.Get("costhenum_numu_invert_"+theta13tstring+"_"+CPdeltastring);
-    
-    //  TH2D *hpnorm = (TH2D*)f->Get("costhenup_mc_norm_"+theta13tstring+"_"+CPdeltastring);
-    //TH2D *hpinvert = (TH2D*)f->Get("costhenup_mc_invert_"+theta13tstring+"_"+CPdeltastring);
-    
-    //TH2D *hmnorm = (TH2D*)f->Get("costhenum_mc_norm_"+theta13tstring+"_"+CPdeltastring);
-    //TH2D *hminvert = (TH2D*)f->Get("costhenum_mc_invert_"+theta13tstring+"_"+CPdeltastring);
+ 
     TH2D *hpnorm =  new TH2D();
     TH2D *hpinvert = new TH2D();
     
@@ -230,7 +222,8 @@ void plotsensitivity_comb(int mctype = 1011, double mupmumscale = 1.0){
 	hmnorm = (TH2D*)fup->Get("costhenum_mc_norm_"+theta13tstring+"_"+CPdeltastring);
 	hminvert = (TH2D*)fup->Get("costhenum_mc_invert_"+theta13tstring+"_"+CPdeltastring);
       }
-    
+      //Calculate chi_2 between expected (for the various scenarios) and our actual observed data.
+      //We have four different data sets: CV with positive mu, CV with negative mu, Upward going positive mu, and Upward going negative mu.
     //Expect NH, get IH positive mu
       for (int j = 1; j<=hpnorm->GetNbinsX(); j++){
 	for (int k = 1; k<=hpnorm->GetNbinsY(); k++){
@@ -349,6 +342,7 @@ void plotsensitivity_comb(int mctype = 1011, double mupmumscale = 1.0){
   }
   
    cout<<"Entries "<<hchi2sensnorm->GetEntries()<<endl;
+   //Draw and output results
    
    gStyle->SetPalette(1);
 
