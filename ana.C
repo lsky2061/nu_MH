@@ -427,18 +427,16 @@ void ana::Loop()
 	double b = 2*reco_pmu*(evt_trkdirx*evt_shwdirx+evt_trkdiry*evt_shwdiry+evt_trkdirz*evt_shwdirz);
 	double c = pow(reco_pmu,2)-pow(fabs(evt_recoemu)+evt_recoeshwdwgt,2);
 	reco_pshw = (sqrt(b*b-4*c)-b)/2;
-	//cout<<pshw<<" "<<evt_recoeshwdwgt<<" "<<sqrt(pow(mc_pnux-mc_pmux,2)+pow(mc_pnuy-mc_pmuy,2)+pow(mc_pnuz-mc_pmuz,2))<<" "<<mc_emu<<" "<<evt_recoemu<<endl;
+
 	reco_nucostheta = -(reco_pmu*evt_trkdiry+reco_pshw*evt_shwdiry)/
 	  sqrt(pow(reco_pmu*evt_trkdirx+reco_pshw*evt_shwdirx,2)+pow(reco_pmu*evt_trkdiry+reco_pshw*evt_shwdiry,2)+pow(reco_pmu*evt_trkdirz+reco_pshw*evt_shwdirz,2));	
-	//reco_nucostheta = -(reco_emu*evt_trkdiry+reco_pshw*evt_shwdiry)/
-	//sqrt(pow(reco_emu*evt_trkdirx+reco_pshw*evt_shwdirx,2)+pow(reco_emu*evt_trkdiry+reco_pshw*evt_shwdiry,2)+pow(reco_emu*evt_trkdirz+reco_pshw*evt_shwdirz,2));	
       }
       reco_shwcostheta = -evt_shwdiry;
       //reco_emu = sqrt(evt_recoemu*evt_recoemu+0.10566*0.10566);
       reco_emu = fabs(evt_recoemu);
       reco_eshw = evt_recoeshwdwgt;
 
-      //Some information we only have in the case of simulation, so we make the calculations using that
+      //Some information we only have in the case of simulation, so we make the calculations of energy and angle using that
       if (itype>0){//mc
 	double x[2];
 	double par[8];
@@ -505,6 +503,7 @@ void ana::Loop()
 
       //if (itype==2) cout<<reco_enu<<" "<<weight<<" "<<oscwei[0]<<endl;
 
+      //Fill histograms with oscillated neutrinos (from simulation) and actual data (for data)
       for (int iosc = 0; iosc<5; iosc++){//iosc
 
 	enu[itype][iosc]->Fill(log10(reco_enu),weight*oscwei[iosc]);
@@ -594,30 +593,9 @@ void ana::Loop()
       }
       t1->Fill();
    }
+   //Write everything to output data files 
    t1->Write();
    f.Write();
-//   for (int i = 0; i<ntot; i++){
-//     for (int j = 0 ; j<nosc; j++){
-//       if (i==1&&j<=2){
-//	 thetaep[i][j]->SaveObj();
-//	 thetaem[i][j]->SaveObj();
-//	 thetaep2[i][j]->SaveObj();
-//	 thetaem2[i][j]->SaveObj();
-//	 thetaep3[i][j]->SaveObj();
-//	 thetaem3[i][j]->SaveObj();
-//	 thetaep4[i][j]->SaveObj();
-//	 thetaem4[i][j]->SaveObj();
-//	 thetaep5[i][j]->SaveObj();
-//	 thetaem5[i][j]->SaveObj();
-//	 thetaep6[i][j]->SaveObj();
-//	 thetaem6[i][j]->SaveObj();
-//	 thetaep7[i][j]->SaveObj();
-//	 thetaem7[i][j]->SaveObj();
-//	 thetaep8[i][j]->SaveObj();
-//	 thetaem8[i][j]->SaveObj();
-//       }
-//     }
-//   }
 
    for (int i = 1; i<2; i++){
      for (int j = 0; j<3; j++){
@@ -632,30 +610,7 @@ void ana::Loop()
    f.Close();
 }
 
-//double rewei(double enu, double costh, double *sigma1, double *sigma2, TH2D *h1, TH2D *h2){
-//
-//  double wei = 0;
-//  
-//  if (enu<0||enu>=30) return 0;
-//  
-//  int bin = int(enu/30*1000);
-//  
-//  double binc1 = sigma1[bin];
-//  double binc2 = sigma2[bin];
-//
-//  if (binc1>0&&binc2>0) wei = binc2/binc1;
-//  else return 0;
-//
-//  binc1 = h1->GetBinContent(h1->FindBin(enu, costh));
-//  binc2 = h2->GetBinContent(h2->FindBin(enu, costh));
-//
-//  if (binc1>0&&binc2>0) {
-//    wei *= binc1/binc2;
-//    return wei;
-//  }
-//  else return 0;
-//
-//}
+
 
 void ana::testrew(double enu, double costh, int inu){
   cout<<rewei(enu,costh,inu)<<endl;
