@@ -7,4 +7,4 @@ We ran rungrid.csh, which called rungrid.C, which called ana.C, which did most o
 
 The data files produced by ana.C were then processed by plotsensitivity_comb.C to produce the final results.
 
-The pdf file is the conference presentation where I first publicly presented the results of this work. 
+MassHierarcyCoSSURF2015.pdf file is the conference presentation where I first publicly presented the results of this work. 
